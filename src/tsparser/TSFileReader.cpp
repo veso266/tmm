@@ -23,6 +23,17 @@ Public License along with this program. If not, see http://www.gnu.org/licenses/
 
 #include "tsparser/TSFileReader.h"
 
+#ifdef _WIN32
+	#include <string>
+	#define FOPEN fopen
+	#define FSEEK _fseeki64
+	#define FTELL _ftelli64
+#else
+	#define FOPEN fopen64
+	#define FSEEK fseeko64
+	#define FTELL ftello64
+#endif
+
 namespace br {
 namespace pucrio {
 namespace telemidia {
@@ -60,14 +71,14 @@ void TSFileReader::setFilename(const string& filename) {
 int TSFileReader::open() {
 	packetSize = readPacketSize(filename);
 	if (packetSize < 0) return -1;
-	pFile = fopen64(filename.c_str(), "rb");
+	pFile = FOPEN(filename.c_str(), "rb");
 	if (pFile == NULL ) {
 		cout << "TSFileReader::open - Unable to open file: " << filename << endl;
 		return -2;
 	}
-	fseeko64(pFile, 0, SEEK_END);
-	length = ftello64(pFile);
-	fseeko64(pFile, 0, SEEK_SET);
+	FSEEK(pFile, 0, SEEK_END);
+	length = FTELL(pFile);
+	FSEEK(pFile, 0, SEEK_SET);
 	return read();
 }
 
@@ -91,7 +102,7 @@ void TSFileReader::resetLoopCount() {
 }
 
 int TSFileReader::goTo(int64_t position) {
-	int ret = fseeko64(pFile, position, SEEK_SET);
+	int ret = FSEEK(pFile, position, SEEK_SET);
 	bufferPos = 0;
 	bufferLength = 0;
 	read();
@@ -171,7 +182,7 @@ int TSFileReader::read() {
 	}
 
 	if (feof(pFile)) {
-		fseeko64(pFile, 0, SEEK_SET);
+		FSEEK(pFile, 0, SEEK_SET);
 		loopCount++;
 	}
 
@@ -188,7 +199,7 @@ bool TSFileReader::rewind() {
 	if (!pFile) {
 		if (open() < 0) return false;
 	}
-	fseeko64(pFile, 0, SEEK_SET);
+	FSEEK(pFile, 0, SEEK_SET);
 	bufferPos = 0;
 	bufferLength = 0;
 	read();

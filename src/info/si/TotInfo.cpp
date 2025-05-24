@@ -20,7 +20,9 @@ Public License along with this program. If not, see http://www.gnu.org/licenses/
  *  Created on: 16/04/2014
  *      Author: Felippe Nagato
  */
-
+#ifdef _WIN32
+	#include <string>
+#endif
 #include "info/si/TotInfo.h"
 
 namespace br {

@@ -52,7 +52,11 @@ class XMLProject : public Project {
 	#define IIP_NAME "_iip_project_"
 
 	private:
+#ifdef _WIN32
+		tinyxml2::XMLDocument* xmldoc;
+#else
 		XMLDocument* xmldoc;
+#endif
 
 		void init();
 

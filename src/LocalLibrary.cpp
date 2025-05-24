@@ -107,7 +107,11 @@ string LocalLibrary::getElementText(XMLElement* e) {
 }
 
 string LocalLibrary::extractBaseId(const string& filename) {
+#ifdef _WIN32
+	tinyxml2::XMLDocument xmldoc;
+#else
 	XMLDocument xmldoc;
+#endif
 	enum XMLError err;
 	XMLElement *e;
 	string value = "";

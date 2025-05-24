@@ -53,7 +53,11 @@ XMLProject::~XMLProject() {
 }
 
 void XMLProject::init() {
+#ifdef _WIN32
+	xmldoc = new tinyxml2::XMLDocument();
+#else
 	xmldoc = new XMLDocument();
+#endif
 	projectName.assign("Untitled project");
 	idIndex = 1;
 	relStc = 0;

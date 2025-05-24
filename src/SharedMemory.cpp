@@ -91,10 +91,15 @@ bool SharedMemory::createSharedMemory() {
 		}
 	    return false;
 	}
-
+#ifdef _WIN32
+	buffer = (char*) MapViewOfFile(md,   // handle to map object
+								FILE_MAP_ALL_ACCESS, // read/write permission
+								0, 0, MEMORY_BUFFER_SIZE);
+#else
 	buffer = (const char*) MapViewOfFile(md,   // handle to map object
 								FILE_MAP_ALL_ACCESS, // read/write permission
 								0, 0, MEMORY_BUFFER_SIZE);
+#endif
 
 	if (buffer == NULL) {
 		if (showErrorMsg) {
@@ -157,10 +162,15 @@ bool SharedMemory::openSharedMemory() {
 		}
 		return false;
 	}
-
+#ifdef _WIN32
+	buffer = (char*) MapViewOfFile(md,// handle to map object
+			   FILE_MAP_ALL_ACCESS,  		// read/write permission
+			   0, 0, MEMORY_BUFFER_SIZE);
+#else			   
 	buffer = (const char*) MapViewOfFile(md,// handle to map object
 			   FILE_MAP_ALL_ACCESS,  		// read/write permission
 			   0, 0, MEMORY_BUFFER_SIZE);
+#endif
 
 	if (buffer == NULL) {
 		if (showErrorMsg) {
