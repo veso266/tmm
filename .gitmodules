@@ -1,4 +1,4 @@
 [submodule "tmm-mpeg2ts"]
 	path = tmm-mpeg2ts
-	url = https://github.com/TeleMidia/tmm-mpeg2ts.git
+	url = https://github.com/veso266/tmm-mpeg2ts.git
 	branch = master
