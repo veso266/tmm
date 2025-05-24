@@ -36,7 +36,7 @@ MulticastServer::MulticastServer(const char* group, int portNumber) {
 	mAddr.sin_family = AF_INET;
     mAddr.sin_port = htons(this->portNumber);
 
-	loopedBack = 0;
+	loopedBack = 0;  // Not sure what this does, but no difference if its set to 1
 	ttl = 16;
 }
 
@@ -99,7 +99,7 @@ bool MulticastServer::tryToBind() {
 	struct sockaddr_in stSourceAddr;
 
 	stSourceAddr.sin_family = AF_INET;
-	stSourceAddr.sin_port = htons(this->portNumber);
+	stSourceAddr.sin_port = htons(0);  // Bind to ephemeral port for sender
 	stSourceAddr.sin_addr.s_addr = INADDR_ANY;
 
 	/*
